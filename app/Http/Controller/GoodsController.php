@@ -28,7 +28,8 @@ class GoodsController
     public function index()
     {
         $result  = $this->goodsService->getList(12);
-        return $result;
+        return swoole_get_local_ip();
+//        return $result;
 //        return "goods/index";
     }
 }

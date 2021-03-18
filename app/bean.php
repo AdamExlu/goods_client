@@ -213,7 +213,6 @@ return [
     'cliRouter'          => [// 'disabledGroups' => ['demo', 'test'],
     ],
 
-
     //设置consul客户端
     'consul' => [
         'host' => '170.200.7.50',

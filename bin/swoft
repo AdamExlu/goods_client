@@ -5,8 +5,10 @@
 require_once __DIR__ . '/bootstrap.php';
 
 Swoole\Coroutine::set([
-    'max_coroutine' => 300000,
+  'max_coroutine' => 300000,
 ]);
 
 // Run application
-(new \App\Application())->run();
+$app = new \App\Application();
+$app->setEnvFile('/var/www/.env');
+$app->run();

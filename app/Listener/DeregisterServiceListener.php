@@ -12,6 +12,7 @@ namespace App\Listener;
 
 use Swoft\Bean\Annotation\Mapping\Inject;
 use Swoft\Consul\Agent;
+use Swoft\Consul\KV;
 use Swoft\Event\Annotation\Mapping\Listener;
 use Swoft\Event\EventHandlerInterface;
 use Swoft\Event\EventInterface;
@@ -30,9 +31,9 @@ class DeregisterServiceListener implements EventHandlerInterface
     /**
      * @Inject()
      *
-     * @var Agent
+     * @var KV
      */
-    private $agent;
+    private $kv;
 
     /**
      * @param EventInterface $event
@@ -41,7 +42,7 @@ class DeregisterServiceListener implements EventHandlerInterface
     {
         /** @var HttpServer $httpServer */
         $httpServer = $event->getTarget();
-
+        $this->kv->delete('/upstream/goods_server/'.env('HOST').':'.$httpServer->getPort());
         //$this->agent->deregisterService('swoft');
     }
 }

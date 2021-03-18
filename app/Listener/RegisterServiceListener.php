@@ -11,7 +11,7 @@
 namespace App\Listener;
 
 use Swoft\Bean\Annotation\Mapping\Inject;
-use Swoft\Consul\Agent;
+use Swoft\Consul\KV;
 use Swoft\Event\Annotation\Mapping\Listener;
 use Swoft\Event\EventHandlerInterface;
 use Swoft\Event\EventInterface;
@@ -30,9 +30,9 @@ class RegisterServiceListener implements EventHandlerInterface
     /**
      * @Inject()
      *
-     * @var Agent
+     * @var KV
      */
-    private $agent;
+    private $kv;
 
     /**
      * @param EventInterface $event
@@ -41,28 +41,6 @@ class RegisterServiceListener implements EventHandlerInterface
     {
         /** @var HttpServer $httpServer */
         $httpServer = $event->getTarget();
-
-        $service = [
-            'ID'                => 'swoft',
-            'Name'              => 'swoft',
-            'Tags'              => [
-                'http'
-            ],
-            'Address'           => '127.0.0.1',
-            'Port'              => $httpServer->getPort(),
-            'Meta'              => [
-                'version' => '1.0'
-            ],
-            'EnableTagOverride' => false,
-            'Weights'           => [
-                'Passing' => 10,
-                'Warning' => 1
-            ]
-        ];
-
-
-        // Register
-        //        $this->agent->registerService($service);
-        //        CLog::info('Swoft http register service success by consul!');
+        $this->kv->put('/upstream/goods_server/'.env('HOST_IP').':'.env('HOST_PORT'),'{"max_fails":2,"fail_timeout":10}');
     }
 }
