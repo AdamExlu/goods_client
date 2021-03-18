@@ -41,6 +41,6 @@ class RegisterServiceListener implements EventHandlerInterface
     {
         /** @var HttpServer $httpServer */
         $httpServer = $event->getTarget();
-        $this->kv->put('/upstream/goods_server/'.env('HOST_IP').':'.env('HOST_PORT'),'{"max_fails":2,"fail_timeout":10}');
+        $this->kv->put('/upstream/goods_server/'.env('HOST').':'.$httpServer->getPort(),'{"max_fails":2,"fail_timeout":10}');
     }
 }
